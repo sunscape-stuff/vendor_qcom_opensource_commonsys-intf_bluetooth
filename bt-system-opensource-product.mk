@@ -14,6 +14,25 @@ endif #TARGET_FWK_SUPPORTS_FULL_VALUEADDS
 ifeq ($(BOARD_HAVE_BLUETOOTH_QCOM),true)
 PRODUCT_PACKAGES += Bluetooth
 
+ifneq ($(TARGET_BOARD_TYPE),auto)
+# Set supported Bluetooth profiles to enabled
+PRODUCT_PRODUCT_PROPERTIES += \
+    bluetooth.profile.a2dp.source.enabled=true \
+    bluetooth.profile.avrcp.target.enabled=true \
+    bluetooth.profile.avrcp.controller.enabled=true \
+    bluetooth.profile.hfp.ag.enabled=true \
+    bluetooth.profile.asha.central.enabled=true \
+    bluetooth.profile.gatt.enabled=true \
+    bluetooth.profile.hid.host.enabled=true \
+    bluetooth.profile.hid.device.enabled=true \
+    bluetooth.profile.map.server.enabled=true \
+    bluetooth.profile.opp.enabled=true \
+    bluetooth.profile.pan.nap.enabled=true \
+    bluetooth.profile.pan.panu.enabled=true \
+    bluetooth.profile.pbap.server.enabled=true \
+    bluetooth.profile.sap.server.enabled=true
+endif #TARGET_BOARD_TYPE
+
 ifeq ($(TARGET_FWK_SUPPORTS_FULL_VALUEADDS), true)
 ifneq ($(TARGET_BOARD_TYPE),auto)
 TARGET_USE_QTI_BT_STACK ?= true
@@ -51,11 +70,11 @@ PRODUCT_PACKAGES_ENG += l2test_ertm
 PRODUCT_PACKAGES_ENG += rfc
 
 ifneq ($(TARGET_HAS_LOW_RAM), true)
-PRODUCT_PACKAGES_ENG += BTTestApp
+PRODUCT_PACKAGES_DEBUG += BTTestApp
 endif #TARGET_HAS_LOW_RAM
 
 else
-PRODUCT_SOONG_NAMESPACES += packages/apps/Bluetooth
+PRODUCT_SOONG_NAMESPACES += packages/modules/Bluetooth/android/app
 PRODUCT_PACKAGE_OVERLAYS += vendor/qcom/opensource/commonsys-intf/bluetooth/overlay/generic
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := vendor/qcom/opensource/commonsys-intf/bluetooth/build/generic/config
 endif #TARGET_USE_QTI_BT_STACK
